@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Association{
+  id Int @id @unique @default(autoincrement())
+  nom String
+  description String
+  // Relation fields
+  notifications Notification[]
+  progamme Programme @relation(references: [id], fields: [programme_id])
+  programme_id Int
+  succursales Succursale[]
+  cotisations Cotisation[]
+  utilisateurs Utilisateur[]
+}
+
+model Cotisation{
+  id Int @id @unique @default(autoincrement())
+  label String
+  devise String
+  date_creation DateTime
+  isActive Boolean
+  // Relation fields
+  association Association @relation(references: [id], fields: [association_id])
+  association_id Int
+  type_cotisation Type_Cotisation @relation(references: [id], fields: [type_cotisation_id])
+  type_cotisation_id Int
+  paiements Paiement[]
+}
+
+model Moto{
+  id Int @id @unique @default(autoincrement())
+  marque String
+  modele String
+  immatriculation String
+  // Relation fields
+  proprietaire Utilisateur @relation(references: [id], fields: [utilisateur_id])
+  utilisateur_id String
+}
+
+
+model Notification{
+  id Int @id @unique @default(autoincrement())
+  titre String
+  message String
+  date_creation DateTime
+  date_envoi DateTime?
+  // Relation fields
+  association Association @relation(references: [id], fields: [association_id])
+  association_id Int
+
+}
+
+
+model Paiement{
+  id Int @id @unique @default(autoincrement())
+  reference String
+  //Relation fields
+  cotisation Cotisation @relation(references: [id], fields: [cotisation_id])
+  cotisation_id Int
+  utilisateur Utilisateur @relation(references: [id], fields: [utilisateur_id])
+  utilisateur_id String
+}
+
+
+model Permission{
+  id Int @id @unique @default(autoincrement())
+  label String
+  description String?
+  // Relation fields
+  profils_utilisateurs Profil_Utilisateur[]
+}
+
+model Profil_Utilisateur{
+  id Int @id @unique @default(autoincrement())
+  label String
+  // Relation fields
+  utilisateur Utilisateur[]
+  permissions Permission[]
+}
+
+model Programme{
+  id Int @id @unique @default(autoincrement())
+  nom String
+  portee String
+  telephone String
+  email String
+  // Relation fields
+  associations Association[]
+}
+
+model Succursale{
+  id Int @id @unique @default(autoincrement())
+  nom String
+  association Association @relation(references: [id], fields: [association_id])
+  association_id Int
+}
+
+model Type_Cotisation{
+  id Int @id @unique @default(autoincrement())
+  label String
+  //Relation fields
+  cotisations Cotisation[]
+}
+
+model Utilisateur{
+  id String @id @default(uuid())
+  nom String
+  prenom String
+  postnom String
+  email String?
+  password String
+  phone1 String
+  phone2 String?
+  lieu_naissance String
+  date_naissance DateTime @db.Date
+  // Relation fields
+  association Association? @relation(references: [id], fields: [association_id])
+  association_id Int?
+  profil Profil_Utilisateur @relation(references: [id], fields: [profil_id])
+  profil_id Int
+  paiements Paiement[]
+  moto Moto[]
+
+}
