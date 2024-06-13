@@ -1,13 +1,14 @@
 const express =  require('express');
+const { getAssociations, addAssociation, getAssociation, updateAssociation, deleteAssociation } = require('../controllers/associations');
 const router = express.Router()
 
-router.get("/")
-.get()
-.post()
+router.route("/")
+.get(getAssociations)
+.post(addAssociation)
 
 router.route("/:id")
-.get()
-.put()
-.delete()
+.get(getAssociation)
+.put(updateAssociation)
+.delete(deleteAssociation)
 
 module.exports = router;

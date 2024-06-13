@@ -4,7 +4,7 @@ const cors = require('cors')
 const dotenv = require('dotenv');
 const passport = require('passport');
 const programRouter = require('./routes/programs')
-
+const associationRouter = require('./routes/associations')
 
 // Configurations
 dotenv.config()
@@ -21,6 +21,7 @@ server.get("/", (req, res) => {
 })
 
 // Routers
+server.use("/associations", associationRouter)
 server.use("/programs", programRouter)
 
 server.listen(port, host, () => {

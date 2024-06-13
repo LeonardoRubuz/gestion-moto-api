@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Association" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "nom" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "programme_id" INTEGER NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE "Association" (
 
 -- CreateTable
 CREATE TABLE "Cotisation" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "label" TEXT NOT NULL,
     "devise" TEXT NOT NULL,
     "date_creation" TIMESTAMP(3) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE "Cotisation" (
 
 -- CreateTable
 CREATE TABLE "Moto" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "marque" TEXT NOT NULL,
     "modele" TEXT NOT NULL,
     "immatriculation" TEXT NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE "Moto" (
 
 -- CreateTable
 CREATE TABLE "Notification" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "titre" TEXT NOT NULL,
     "message" TEXT NOT NULL,
     "date_creation" TIMESTAMP(3) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE "Notification" (
 
 -- CreateTable
 CREATE TABLE "Paiement" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "reference" TEXT NOT NULL,
     "cotisation_id" INTEGER NOT NULL,
     "utilisateur_id" TEXT NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE "Paiement" (
 
 -- CreateTable
 CREATE TABLE "Permission" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "label" TEXT NOT NULL,
     "description" TEXT,
 
@@ -65,7 +65,7 @@ CREATE TABLE "Permission" (
 
 -- CreateTable
 CREATE TABLE "Profil_Utilisateur" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "label" TEXT NOT NULL,
 
     CONSTRAINT "Profil_Utilisateur_pkey" PRIMARY KEY ("id")
@@ -73,7 +73,7 @@ CREATE TABLE "Profil_Utilisateur" (
 
 -- CreateTable
 CREATE TABLE "Programme" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "nom" TEXT NOT NULL,
     "portee" TEXT NOT NULL,
     "telephone" TEXT NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE "Programme" (
 
 -- CreateTable
 CREATE TABLE "Succursale" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "nom" TEXT NOT NULL,
     "association_id" INTEGER NOT NULL,
 
@@ -93,7 +93,7 @@ CREATE TABLE "Succursale" (
 
 -- CreateTable
 CREATE TABLE "Type_Cotisation" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "label" TEXT NOT NULL,
 
     CONSTRAINT "Type_Cotisation_pkey" PRIMARY KEY ("id")
@@ -122,6 +122,36 @@ CREATE TABLE "_PermissionToProfil_Utilisateur" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Association_id_key" ON "Association"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Cotisation_id_key" ON "Cotisation"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Moto_id_key" ON "Moto"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Notification_id_key" ON "Notification"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Paiement_id_key" ON "Paiement"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Permission_id_key" ON "Permission"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Profil_Utilisateur_id_key" ON "Profil_Utilisateur"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Programme_id_key" ON "Programme"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Succursale_id_key" ON "Succursale"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Type_Cotisation_id_key" ON "Type_Cotisation"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_PermissionToProfil_Utilisateur_AB_unique" ON "_PermissionToProfil_Utilisateur"("A", "B");

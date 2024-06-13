@@ -11,13 +11,18 @@ const createAssociation = async (association) => {
     try {
         await prisma.association.create({
             data : {
-                ... association
+                ...association,
+                programme : {
+                    connect : {
+                        id : association.programme
+                    }
+                }
             }
         })
-        return true
+        return true;
     } catch (error) {
         console.error(error);
-        return false    // Failure to create an association entity
+        return false
     }
 }
 
