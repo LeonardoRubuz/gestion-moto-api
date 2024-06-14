@@ -10,11 +10,11 @@ const prisma = new PrismaClient;
 const createAssociation = async (association) => {
     try {
         await prisma.association.create({
-            data : {
+            data: {
                 ...association,
-                programme : {
-                    connect : {
-                        id : association.programme
+                programme: {
+                    connect: {
+                        id: association.programme
                     }
                 }
             }
@@ -25,7 +25,6 @@ const createAssociation = async (association) => {
         return false
     }
 }
-
 const retrieveAssociations = async () => {
     try {
         const associations = await prisma.association.findMany()
@@ -34,12 +33,11 @@ const retrieveAssociations = async () => {
         console.error(error);
     }
 }
-
 const retrieveAssociation = async (association_id) => {
     try {
         const association = await prisma.association.findUnique({
-            where : {
-                id : parseInt(association_id)
+            where: {
+                id: parseInt(association_id)
             }
         })
         if (!association) {
@@ -50,14 +48,13 @@ const retrieveAssociation = async (association_id) => {
         console.error(error);
     }
 }
-
 const changeAssociation = async (association_id, datas) => {
     try {
         await prisma.association.update({
-            where : {
-                id : parseInt(association_id)
+            where: {
+                id: parseInt(association_id)
             },
-            data : {
+            data: {
                 ...datas
             }
         })
@@ -67,12 +64,11 @@ const changeAssociation = async (association_id, datas) => {
         return false
     }
 }
-
 const removeAssociation = async (association_id) => {
     try {
         await prisma.association.delete({
-            where : {
-                id : parseInt(association_id)
+            where: {
+                id: parseInt(association_id)
             }
         })
         return true
@@ -86,11 +82,11 @@ const removeAssociation = async (association_id) => {
 const createAssociationBranch = async (association_id, datas) => {
     try {
         await prisma.succursale.create({
-            data : {
+            data: {
                 ...datas,
-                association : {
-                    connect : {
-                        id : parseInt(association_id)
+                association: {
+                    connect: {
+                        id: parseInt(association_id)
                     }
                 }
             }
@@ -101,12 +97,11 @@ const createAssociationBranch = async (association_id, datas) => {
         return false
     }
 }
-
 const retrieveAssociationBranches = async (association_id) => {
     try {
         const branches = await prisma.succursale.findMany({
-            where : {
-                association_id  : parseInt(association_id)
+            where: {
+                association_id: parseInt(association_id)
             }
         })
         return branches
@@ -114,13 +109,12 @@ const retrieveAssociationBranches = async (association_id) => {
         console.error(error);
     }
 }
-
 const retrieveAssociationBranch = async (association_id, branch_id) => {
     try {
         const branch = await prisma.succursale.findUnique({
-            where : {
-                association_id : parseInt(association_id),
-                id : parseInt(branch_id)
+            where: {
+                association_id: parseInt(association_id),
+                id: parseInt(branch_id)
             }
         })
         return branch
@@ -128,15 +122,14 @@ const retrieveAssociationBranch = async (association_id, branch_id) => {
         console.error(error);
     }
 }
-
 const changeAssociationBranch = async (association_id, branch_id, datas) => {
     try {
         await prisma.succursale.update({
-            where : {
-                association_id : parseInt(association_id),
-                id : parseInt(branch_id)
+            where: {
+                association_id: parseInt(association_id),
+                id: parseInt(branch_id)
             },
-            data : {
+            data: {
                 ...datas
             }
         })
@@ -146,13 +139,12 @@ const changeAssociationBranch = async (association_id, branch_id, datas) => {
         return false
     }
 }
-
 const removeAssociationBranch = async (association_id, branch_id) => {
     try {
         await prisma.succursale.delete({
-            where : {
-                association_id : parseInt(association_id),
-                id : parseInt(branch_id) 
+            where: {
+                association_id: parseInt(association_id),
+                id: parseInt(branch_id)
             }
         })
     } catch (error) {
@@ -165,10 +157,10 @@ const removeAssociationBranch = async (association_id, branch_id) => {
 const createAssociationNotif = async (association_id, datas) => {
     try {
         await prisma.notification.create({
-            data : {
-                association : {
-                    connect : {
-                        id : parseInt(association_id)
+            data: {
+                association: {
+                    connect: {
+                        id: parseInt(association_id)
                     }
                 },
                 ...datas
@@ -180,12 +172,11 @@ const createAssociationNotif = async (association_id, datas) => {
         return false
     }
 }
-
 const retrieveAssociationNotifs = async (association_id) => {
     try {
         const notifs = await prisma.notification.findMany({
-            where : {
-                association_id : parseInt(association_id)
+            where: {
+                association_id: parseInt(association_id)
             }
         })
         return notifs
@@ -193,13 +184,12 @@ const retrieveAssociationNotifs = async (association_id) => {
         console.error(error);
     }
 }
-
 const retrieveAssociationNotif = async (association_id, notif_id) => {
     try {
         const notif = await prisma.notification.findUnique({
-            where : {
-                association_id : parseInt(association_id),
-                id : parseInt(notif_id)
+            where: {
+                association_id: parseInt(association_id),
+                id: parseInt(notif_id)
             }
         })
         return notif
@@ -207,15 +197,14 @@ const retrieveAssociationNotif = async (association_id, notif_id) => {
         console.error(error);
     }
 }
-
 const changeAssociationNotif = async (association_id, notif_id, datas) => {
     try {
         await prisma.notification.update({
-            where : {
-                association_id : parseInt(association_id),
-                id : parseInt(notif_id)
+            where: {
+                association_id: parseInt(association_id),
+                id: parseInt(notif_id)
             },
-            data : {
+            data: {
                 ...datas
             }
         });
@@ -228,9 +217,9 @@ const changeAssociationNotif = async (association_id, notif_id, datas) => {
 const removeAssociationNotif = async (association_id, notif_id) => {
     try {
         await prisma.notification.delete({
-            where : {
-                association_id : parseInt(association_id),
-                id : parseInt(notif_id)
+            where: {
+                association_id: parseInt(association_id),
+                id: parseInt(notif_id)
             }
         })
         return true
@@ -245,7 +234,7 @@ const removeAssociationNotif = async (association_id, notif_id) => {
 const createContribution = async (datas) => {
     try {
         await prisma.cotisation.create({
-            data : {
+            data: {
                 ...datas
             }
         })
@@ -255,33 +244,31 @@ const createContribution = async (datas) => {
         return false
     }
 }
-
 const retrieveContributions = async (association_id) => {
     try {
         if (association_id) {
             const contribs = await prisma.cotisation.findMany({
-                where : {
-                    association_id : parseInt(association_id)
+                where: {
+                    association_id: parseInt(association_id)
                 }
             })
-            return contribs    
+            return contribs
         } else {
             const contribs = await prisma.cotisation.findMany()
             return contribs
-        } 
+        }
     } catch (error) {
         console.error(error);
     }
 }
-
 const retrieveContribution = async (contrib_id) => {
     try {
         const contrib = await prisma.cotisation.findUnique({
-            where : {
-                id : parseInt(contrib_id)
+            where: {
+                id: parseInt(contrib_id)
             }
         })
-        return contrib 
+        return contrib
     } catch (error) {
         console.error(error);
     }
@@ -289,14 +276,14 @@ const retrieveContribution = async (contrib_id) => {
 const changeContribution = async (contrib_id, datas) => {
     try {
         await prisma.cotisation.update({
-            where : {
-                id : parseInt(contrib_id)
+            where: {
+                id: parseInt(contrib_id)
             },
-            data : {
+            data: {
                 ...datas
             }
         })
-        return true 
+        return true
     } catch (error) {
         console.error(error);
         return false
@@ -305,17 +292,80 @@ const changeContribution = async (contrib_id, datas) => {
 const removeContribution = async (contrib_id) => {
     try {
         await prisma.cotisation.delete({
-            where : {
-                id : parseInt(contrib_id)
+            where: {
+                id: parseInt(contrib_id)
             }
         })
-        return true; 
+        return true;
     } catch (error) {
         console.error(error);
         return false
     }
 }
 
+
+const createContributionType = async (datas) => {
+    try {
+        await prisma.type_Cotisation.create({
+            data: {
+                ...datas
+            }
+        })
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+const retrieveContributionTypes = async () => {
+    try {
+        const types = await prisma.type_Cotisation.findMany();
+        return types;
+    } catch (error) {
+        console.error(error);
+    }
+}
+const retrieveContributionType = async (type_id) => {
+    try {
+        const type = await prisma.type_Cotisation.findUnique({
+            where: {
+                id: parseInt(type_id)
+            }
+        });
+        return type
+    } catch (error) {
+        console.error(error);
+    }
+}
+const changeContributionType = async (type_id, datas) => {
+    try {
+        await prisma.type_Cotisation.update({
+            where: {
+                id: parseInt(type_id)
+            },
+            data: {
+                ...datas
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+const removeContributionType = async (type_id) => {
+    try {
+        await prisma.type_Cotisation.delete({
+            where: {
+                id: parseInt(type_id)
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
 
 // Drivers requests handlers
 
@@ -328,9 +378,9 @@ const removeContribution = async (contrib_id) => {
 const createPermission = async (datas) => {
     try {
         await prisma.permission.create({
-          data : {
-            ...datas
-          }  
+            data: {
+                ...datas
+            }
         });
         return true;
     } catch (error) {
@@ -349,8 +399,8 @@ const retrievePermissions = async () => {
 const retrievePermission = async (permission_id) => {
     try {
         const permission = await prisma.permission.findUnique({
-            where : {
-                id : parseInt(permission_id)
+            where: {
+                id: parseInt(permission_id)
             }
         });
         return permission
@@ -361,8 +411,8 @@ const retrievePermission = async (permission_id) => {
 const changePermission = async (permission_id) => {
     try {
         await prisma.permission.update({
-            where :{
-                id : parseInt(permission_id)
+            where: {
+                id: parseInt(permission_id)
             }
         });
         return true;
@@ -374,8 +424,8 @@ const changePermission = async (permission_id) => {
 const removePermission = async (permission_id) => {
     try {
         await prisma.permission.delete({
-            where : {
-                id : parseInt(permission_id)
+            where: {
+                id: parseInt(permission_id)
             }
         });
         return true
@@ -385,13 +435,33 @@ const removePermission = async (permission_id) => {
     }
 }
 
+const paginatedPermissions = async (query) => {
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit);
+    try {
+        if (page && limit) {
+            const perms = await prisma.permission.findMany({
+                skip: ((page - 1) * limit),
+                take: limit
+            })
+            return perms
+        } else {
+            const perms = await prisma.permission.findMany()
+            return perms
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
 // Programs requests handlers
 
 const createProgram = async (program) => {
     try {
         await prisma.programme.create({
-            data : {
-                ... program
+            data: {
+                ...program
             }
         })
         return true
@@ -415,8 +485,8 @@ const retrievePrograms = async () => {
 const retrieveProgram = async (program_id) => {
     try {
         const program = await prisma.programme.findUnique({
-            where : {
-                id : parseInt(program_id)
+            where: {
+                id: parseInt(program_id)
             }
         })
         if (!program) {
@@ -432,10 +502,10 @@ const retrieveProgram = async (program_id) => {
 const changeProgram = async (program_id, datas) => {
     try {
         await prisma.programme.update({
-            where : {
-                id : parseInt(program_id)
+            where: {
+                id: parseInt(program_id)
             },
-            data : {
+            data: {
                 ...datas
             }
         })
@@ -450,8 +520,8 @@ const changeProgram = async (program_id, datas) => {
 const removeProgram = async (program_id) => {
     try {
         await prisma.programme.delete({
-            where : {
-                id : parseInt(program_id)
+            where: {
+                id: parseInt(program_id)
             }
         })
         return true
@@ -472,5 +542,6 @@ module.exports = {
     createAssociationBranch, retrieveAssociationBranches, retrieveAssociationBranch, changeAssociationBranch, removeAssociationBranch,
     createAssociationNotif, retrieveAssociationNotifs, retrieveAssociationNotif, changeAssociationNotif, removeAssociationNotif,
     createContribution, retrieveContribution, retrieveContributions, changeContribution, removeContribution,
-    createPermission, retrievePermissions, retrievePermission, changePermission, removePermission
+    createPermission, retrievePermissions, retrievePermission, changePermission, removePermission,
+    createContributionType, retrieveContributionTypes, retrieveContributionType, changeContributionType, removeContributionType
 };
