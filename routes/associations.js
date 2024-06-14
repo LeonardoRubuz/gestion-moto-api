@@ -36,7 +36,6 @@ router.route("/:id/branches")
 .get(getAssociationBranches)
 .post(addAssociationBranch)
 
-// Tester les endpoints à partir d'ici
 
 router.route("/:id/branches/:branch_id")
 .get(getAssociationBranch)

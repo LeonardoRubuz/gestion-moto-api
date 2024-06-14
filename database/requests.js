@@ -242,6 +242,81 @@ const removeAssociationNotif = async (association_id, notif_id) => {
 
 // Contributions requests handlers
 
+const createContribution = async (datas) => {
+    try {
+        await prisma.cotisation.create({
+            data : {
+                ...datas
+            }
+        })
+        return true
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+}
+
+const retrieveContributions = async (association_id) => {
+    try {
+        if (association_id) {
+            const contribs = await prisma.cotisation.findMany({
+                where : {
+                    association_id : parseInt(association_id)
+                }
+            })
+            return contribs    
+        } else {
+            const contribs = await prisma.cotisation.findMany()
+            return contribs
+        } 
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const retrieveContribution = async (contrib_id) => {
+    try {
+        const contrib = await prisma.cotisation.findUnique({
+            where : {
+                id : parseInt(contrib_id)
+            }
+        })
+        return contrib 
+    } catch (error) {
+        console.error(error);
+    }
+}
+const changeContribution = async (contrib_id, datas) => {
+    try {
+        await prisma.cotisation.update({
+            where : {
+                id : parseInt(contrib_id)
+            },
+            data : {
+                ...datas
+            }
+        })
+        return true 
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+}
+const removeContribution = async (contrib_id) => {
+    try {
+        await prisma.cotisation.delete({
+            where : {
+                id : parseInt(contrib_id)
+            }
+        })
+        return true; 
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+}
+
+
 // Drivers requests handlers
 
 // Notifications requests handlers
@@ -335,5 +410,6 @@ module.exports = {
     createAssociation, retrieveAssociations, retrieveAssociation, changeAssociation, removeAssociation,
     createProgram, retrievePrograms, retrieveProgram, changeProgram, removeProgram,
     createAssociationBranch, retrieveAssociationBranches, retrieveAssociationBranch, changeAssociationBranch, removeAssociationBranch,
-    createAssociationNotif, retrieveAssociationNotifs, retrieveAssociationNotif, changeAssociationNotif, removeAssociationNotif
+    createAssociationNotif, retrieveAssociationNotifs, retrieveAssociationNotif, changeAssociationNotif, removeAssociationNotif,
+    createContribution, retrieveContribution, retrieveContributions, changeContribution, removeContribution
 };

@@ -1,4 +1,19 @@
-const { createAssociation, retrieveAssociations, retrieveAssociation, changeAssociation, removeAssociation, createAssociationBranch, retrieveAssociationBranches, retrieveAssociationBranch, changeAssociationBranch, removeAssociationBranch, createAssociationNotif, retrieveAssociationNotifs, retrieveAssociationNotif, changeAssociationNotif, removeAssociationNotif } = require("../database/requests")
+const { 
+    createAssociation, 
+    retrieveAssociations, 
+    retrieveAssociation, 
+    changeAssociation, 
+    removeAssociation, 
+    createAssociationBranch, 
+    retrieveAssociationBranches, 
+    retrieveAssociationBranch, 
+    changeAssociationBranch, 
+    removeAssociationBranch, 
+    createAssociationNotif, 
+    retrieveAssociationNotifs, 
+    retrieveAssociationNotif, 
+    changeAssociationNotif, 
+    removeAssociationNotif } = require("../database/requests")
 
 
 const addAssociation = async (req, res) => {

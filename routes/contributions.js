@@ -1,13 +1,20 @@
 const express =  require('express');
+const { 
+    getContributions,
+    addContribution,
+    getContribution,
+    updateContribution,
+    deleteContribution
+ } = require('../controllers/contributions');
 const router = express.Router()
 
 router.get("/")
-.get()
-.post()
+.get(getContributions)
+.post(addContribution)
 
 router.route("/:id")
-.get()
-.put()
-.delete()
+.get(getContribution)
+.put(updateContribution)
+.delete(deleteContribution)
 
 module.exports = router;
