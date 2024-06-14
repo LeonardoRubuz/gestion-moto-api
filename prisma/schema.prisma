@@ -55,7 +55,7 @@ model Notification{
   id Int @id @unique @default(autoincrement())
   titre String
   message String
-  date_creation DateTime
+  date_creation DateTime 
   date_envoi DateTime?
   // Relation fields
   association Association @relation(references: [id], fields: [association_id])
