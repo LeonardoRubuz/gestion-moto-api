@@ -325,6 +325,66 @@ const removeContribution = async (contrib_id) => {
 
 // Permissions requests handlers
 
+const createPermission = async (datas) => {
+    try {
+        await prisma.permission.create({
+          data : {
+            ...datas
+          }  
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+const retrievePermissions = async () => {
+    try {
+        const permissions = await prisma.permission.findMany()
+        return permissions
+    } catch (error) {
+        console.error(error);
+    }
+}
+const retrievePermission = async (permission_id) => {
+    try {
+        const permission = await prisma.permission.findUnique({
+            where : {
+                id : parseInt(permission_id)
+            }
+        });
+        return permission
+    } catch (error) {
+        console.error(error);
+    }
+}
+const changePermission = async (permission_id) => {
+    try {
+        await prisma.permission.update({
+            where :{
+                id : parseInt(permission_id)
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+const removePermission = async (permission_id) => {
+    try {
+        await prisma.permission.delete({
+            where : {
+                id : parseInt(permission_id)
+            }
+        });
+        return true
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
 // Programs requests handlers
 
 const createProgram = async (program) => {
@@ -411,5 +471,6 @@ module.exports = {
     createProgram, retrievePrograms, retrieveProgram, changeProgram, removeProgram,
     createAssociationBranch, retrieveAssociationBranches, retrieveAssociationBranch, changeAssociationBranch, removeAssociationBranch,
     createAssociationNotif, retrieveAssociationNotifs, retrieveAssociationNotif, changeAssociationNotif, removeAssociationNotif,
-    createContribution, retrieveContribution, retrieveContributions, changeContribution, removeContribution
+    createContribution, retrieveContribution, retrieveContributions, changeContribution, removeContribution,
+    createPermission, retrievePermissions, retrievePermission, changePermission, removePermission
 };

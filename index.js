@@ -1,11 +1,12 @@
 const express =  require('express');
 const server = express();
-const cors = require('cors')
+const cors = require('cors');
 const dotenv = require('dotenv');
 const passport = require('passport');
-const programRouter = require('./routes/programs')
-const associationRouter = require('./routes/associations')
-const contributionRouter = require('./routes/contributions')
+const associationRouter = require('./routes/associations');
+const contributionRouter = require('./routes/contributions');
+const permissionRouter = require('./routes/permissions');
+const programRouter = require('./routes/programs');
 
 // Configurations
 dotenv.config()
@@ -25,6 +26,7 @@ server.get("/", (req, res) => {
 server.use("/associations", associationRouter)
 server.use("/contributions", contributionRouter)
 server.use("/programs", programRouter)
+server.use("/permissions", permissionRouter)
 
 server.listen(port, host, () => {
     console.log(`Server listening on http://${host}:${port}`);
