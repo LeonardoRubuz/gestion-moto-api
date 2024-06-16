@@ -7,6 +7,7 @@ const associationRouter = require('./routes/associations');
 const contributionRouter = require('./routes/contributions');
 const permissionRouter = require('./routes/permissions');
 const programRouter = require('./routes/programs');
+const contribTypeRouter = require('./routes/type-contributions')
 
 // Configurations
 dotenv.config()
@@ -27,6 +28,7 @@ server.use("/associations", associationRouter)
 server.use("/contributions", contributionRouter)
 server.use("/programs", programRouter)
 server.use("/permissions", permissionRouter)
+server.use("/contribution-types", contribTypeRouter)
 
 server.listen(port, host, () => {
     console.log(`Server listening on http://${host}:${port}`);
