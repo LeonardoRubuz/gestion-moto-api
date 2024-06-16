@@ -470,8 +470,6 @@ const createProgram = async (program) => {
         return false    // Failure to create an association entity
     }
 }
-
-
 const retrievePrograms = async () => {
     try {
         const programs = await prisma.programme.findMany()
@@ -480,8 +478,6 @@ const retrievePrograms = async () => {
         console.error(error);
     }
 }
-
-
 const retrieveProgram = async (program_id) => {
     try {
         const program = await prisma.programme.findUnique({
@@ -497,8 +493,6 @@ const retrieveProgram = async (program_id) => {
         console.error(error);
     }
 }
-
-
 const changeProgram = async (program_id, datas) => {
     try {
         await prisma.programme.update({
@@ -515,8 +509,6 @@ const changeProgram = async (program_id, datas) => {
         return false
     }
 }
-
-
 const removeProgram = async (program_id) => {
     try {
         await prisma.programme.delete({
@@ -534,6 +526,134 @@ const removeProgram = async (program_id) => {
 
 // Users requests handlers
 
+const createUser = async (datas) => {
+    try {
+        const hashedPassword = bcrypt.hashSync(datas.password, 20)
+        await prisma.utilisateur.create({
+            data : {
+                password : hashedPassword,
+                ...datas
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+const retrieveUsers = async () => {
+    try {
+        const users = await prisma.utilisateur.findMany();
+        return users;
+    } catch (error) {
+        console.error(error);
+    }
+}
+const retrieveUser = async (user_id) => {
+    try {
+        const user = await prisma.utilisateur.findUnique({
+            where : {
+                id : user_id
+            }
+        });
+        return user;
+    } catch (error) {
+        console.error(error);
+    }
+}
+const changeUser = async (user_id, datas) => {
+    try {
+        await prisma.utilisateur.update({
+            where : {
+                id : user_id
+            },
+            data : {
+                ...datas
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+const removeUser = async (user_id) => {
+    try {
+        await prisma.utilisateur.delete({
+            where : {
+                id : user_id
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
+
+const createUserProfile = async (datas) => {
+    try {
+        await prisma.profil_Utilisateur.create({
+            data : {
+                ...datas
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+const retrieveUserProfiles = async () => {
+    try {
+        const profiles = await prisma.profil_Utilisateur.findMany();
+        return profiles;
+    } catch (error) {
+        console.error(error);
+    }
+}
+const retrieveUserProfile = async (profile_id) => {
+    try {
+        const profile = await prisma.profil_Utilisateur.findUnique({
+            where : {
+                id : parseInt(profile_id)
+            }
+        });
+        return profile;
+    } catch (error) {
+        console.error(error);
+    }
+}
+const changeUserProfile = async (profile_id, datas) => {
+    try {
+        await prisma.profil_Utilisateur.update({
+            where : {
+                id : parseInt(profile_id)
+            },
+            data : {
+                ...datas
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+const removeUserProfile = async (profile_id) => {
+    try {
+        await prisma.profil_Utilisateur.delete({
+            where : {
+                id : parseInt(profile_id)
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
 
 
 module.exports = {
@@ -543,5 +663,7 @@ module.exports = {
     createAssociationNotif, retrieveAssociationNotifs, retrieveAssociationNotif, changeAssociationNotif, removeAssociationNotif,
     createContribution, retrieveContribution, retrieveContributions, changeContribution, removeContribution,
     createPermission, retrievePermissions, retrievePermission, changePermission, removePermission,
-    createContributionType, retrieveContributionTypes, retrieveContributionType, changeContributionType, removeContributionType
+    createContributionType, retrieveContributionTypes, retrieveContributionType, changeContributionType, removeContributionType,
+    createUser, retrieveUsers, retrieveUser, changeUser, removeUser,
+    createUserProfile, retrieveUserProfiles, retrieveUserProfile, changeUserProfile, removeUserProfile
 };

@@ -1,22 +1,34 @@
 const express =  require('express');
+const { 
+    getUsers,
+    addUser,
+    getUser,
+    updateUser,
+    deleteUser,
+    getUserProfiles,
+    addUserProfile,
+    getUserProfile,
+    updateUserProfile,
+    deleteUserProfile
+ } = require('../controllers/users');
 const router = express.Router()
 
 router.route("/")
-.get()
-.post()
+.get(getUsers)
+.post(addUser)
 
 router.route("/:id")
-.get()
-.put()
-.delete()
+.get(getUser)
+.put(updateUser)
+.delete(deleteUser)
 
 router.route("/profiles")
-.get()
-.post()
+.get(getUserProfiles)
+.post(addUserProfile)
 
 router.route("/profiles/:id")
-.get()
-.put()
-.delete()
+.get(getUserProfile)
+.put(updateUserProfile)
+.delete(deleteUserProfile)
 
 module.exports = router;
