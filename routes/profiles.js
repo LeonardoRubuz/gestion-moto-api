@@ -1,10 +1,5 @@
 const express =  require('express');
 const { 
-    getUsers,
-    addUser,
-    getUser,
-    updateUser,
-    deleteUser,
     getUserProfiles,
     addUserProfile,
     getUserProfile,
@@ -13,13 +8,14 @@ const {
  } = require('../controllers/users');
 const router = express.Router()
 
+
 router.route("/")
-.get(getUsers)
-.post(addUser)
+.get(getUserProfiles)
+.post(addUserProfile)
 
 router.route("/:id")
-.get(getUser)
-.put(updateUser)
-.delete(deleteUser)
+.get(getUserProfile)
+.put(updateUserProfile)
+.delete(deleteUserProfile)
 
 module.exports = router;

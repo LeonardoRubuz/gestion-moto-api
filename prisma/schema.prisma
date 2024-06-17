@@ -85,7 +85,7 @@ model Permission{
 
 model Profil_Utilisateur{
   id Int @id @unique @default(autoincrement())
-  label String
+  label String @unique
   // Relation fields
   utilisateur Utilisateur[]
   permissions Permission[]
@@ -129,8 +129,8 @@ model Utilisateur{
   // Relation fields
   association Association? @relation(references: [id], fields: [association_id])
   association_id Int?
-  profil Profil_Utilisateur @relation(references: [id], fields: [profil_id])
-  profil_id Int
+  profil Profil_Utilisateur @relation(references: [label], fields: [profil_label])
+  profil_label String
   paiements Paiement[]
   moto Moto[]
 

@@ -19,7 +19,12 @@ const addUser = async (req, res) => {
     }
 }
 const getUsers = async (req, res) => {
-    const users = await retrieveUsers();
+    let users;
+    if (req.query.profile) {
+        users = await retrieveUsers(req.query.profile);
+    } else {
+        users = await retrieveUsers()
+    }
     res.status(200).json(users);
 }
 const getUser = async (req, res) => {

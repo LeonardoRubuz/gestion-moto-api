@@ -528,11 +528,12 @@ const removeProgram = async (program_id) => {
 
 const createUser = async (datas) => {
     try {
-        const hashedPassword = bcrypt.hashSync(datas.password, 20)
+        const hashedPassword = bcrypt.hashSync(datas.password, 15)
         await prisma.utilisateur.create({
             data : {
-                password : hashedPassword,
-                ...datas
+                ...datas,
+                password : hashedPassword
+                
             }
         });
         return true;
@@ -541,9 +542,19 @@ const createUser = async (datas) => {
         return false;
     }
 }
-const retrieveUsers = async () => {
+const retrieveUsers = async (profile_label) => {
     try {
-        const users = await prisma.utilisateur.findMany();
+        let users;
+        if (profile_label) {
+            console.log(profile_label);
+            users = await prisma.utilisateur.findMany({
+                where : {
+                    profil_label : profile_label
+                }
+            })
+        } else {
+            users = await prisma.utilisateur.findMany()
+        }
         return users;
     } catch (error) {
         console.error(error);
@@ -608,6 +619,7 @@ const createUserProfile = async (datas) => {
 const retrieveUserProfiles = async () => {
     try {
         const profiles = await prisma.profil_Utilisateur.findMany();
+        console.log("Profiles",profiles);
         return profiles;
     } catch (error) {
         console.error(error);
@@ -654,6 +666,8 @@ const removeUserProfile = async (profile_id) => {
         return false;
     }
 }
+
+
 
 
 module.exports = {
