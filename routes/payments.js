@@ -8,7 +8,7 @@ const {
  } = require('../controllers/payments');
 const router = express.Router()
 
-router.get("/")
+router.route("/")
 .get(getPayments)
 .post(addPayment)
 
