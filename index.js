@@ -10,6 +10,7 @@ const programRouter = require('./routes/programs');
 const contribTypeRouter = require('./routes/type-contributions');
 const userRouter = require('./routes/users');
 const profileRouter = require('./routes/profiles')
+const paymentRouter = require('./routes/payments')
 
 // Configurations
 dotenv.config()
@@ -32,7 +33,9 @@ server.use("/programs", programRouter);
 server.use("/permissions", permissionRouter);
 server.use("/contribution-types", contribTypeRouter);
 server.use("/users", userRouter);
-server.use("/profiles", profileRouter)
+server.use("/profiles", profileRouter);
+server.use("/payments", paymentRouter);
+
 
 server.listen(port, host, () => {
     console.log(`Server listening on http://${host}:${port}`);

@@ -367,11 +367,78 @@ const removeContributionType = async (type_id) => {
     }
 }
 
-// Drivers requests handlers
 
 // Notifications requests handlers
 
 // Payments requests handlers
+
+const createPayment = async (datas) => {
+    try {
+        await prisma.paiement.create({
+            data : {
+                ...datas
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
+const retrievePayments = async () => {
+    try {
+        const payments = await prisma.paiement.findMany()
+        return payments;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const retrievePayment = async (payment_id) => {
+    try {
+        const payment = await prisma.paiement.findUnique({
+            where : {
+                id : parseInt(payment_id)
+            }
+        })
+        return payment;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const changePayment = async (payment_id, datas) => {
+    try {
+        await prisma.paiement.update({
+            where : {
+                id : parseInt(payment_id)
+            },
+            data : {
+                ...datas
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
+const removePayment = async () => {
+    try {
+        await prisma.paiement.delete({
+            where : {
+                id : parseInt(payment_id)
+            }
+        });
+        return true; 
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
 
 // Permissions requests handlers
 
@@ -679,5 +746,6 @@ module.exports = {
     createPermission, retrievePermissions, retrievePermission, changePermission, removePermission,
     createContributionType, retrieveContributionTypes, retrieveContributionType, changeContributionType, removeContributionType,
     createUser, retrieveUsers, retrieveUser, changeUser, removeUser,
-    createUserProfile, retrieveUserProfiles, retrieveUserProfile, changeUserProfile, removeUserProfile
+    createUserProfile, retrieveUserProfiles, retrieveUserProfile, changeUserProfile, removeUserProfile,
+    createPayment, retrievePayments, retrievePayment, changePayment, removePayment
 };
