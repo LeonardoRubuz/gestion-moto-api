@@ -26,7 +26,12 @@ const addAssociation = async (req, res) => {
 
 
 const getAssociations = async (req, res) => {
-    const associations = await retrieveAssociations()
+    let associations;
+    if (req.query) {
+        associations = await retrieveAssociations(req.query)
+    } else {
+        associations = await retrieveAssociations()
+    }
     req.status(200).json(associations)
 }
 
@@ -65,7 +70,12 @@ const addAssociationBranch = async (req, res) => {
 }
 
 const getAssociationBranches = async (req, res) => {
-    const branches = await retrieveAssociationBranches(req.params.id)
+    let branches;
+    if (req.query) {
+        branches = await retrieveAssociationBranches(req.params.id, req.query)
+    } else {
+        branches = await retrieveAssociationBranches(req.params.id)
+    }
     res.status(200).json(branches)
 }
 
@@ -108,7 +118,12 @@ const addAssociationNotif = async (req, res) => {
 }
 
 const getAssociationNotifs = async (req, res) => {
-    const notifs = retrieveAssociationNotifs(req.params.id)
+    let notifs;
+    if (req.query) {
+        notifs = retrieveAssociationNotifs(req.params.id, req.query)
+    } else {
+        notifs = retrieveAssociationNotifs(req.params.id)
+    }
     res.status(200).json(notifs)
 }
 

@@ -16,8 +16,13 @@ const addContribution = async (req, res) => {
 }
 
 const getContributions = async (req, res) => {
-    const contribs = await retrieveContributions(req.body.association_id)
-    res.status(200).json(contribs)
+    let contribs;
+    if (req.query) {
+        contribs = await retrieveContributions(req.body.association_id, req.query)
+    } else {
+        contribs = await retrieveContributions(req.body.association_id)
+    }
+    res.status(200).json(contribs);
 }
 
 const getContribution = async (req, res) => {

@@ -14,7 +14,12 @@ const addPayment = async (req, res) => {
     }
 }
 const getPayments = async (req, res) => {
-    const payments = await retrievePayments();
+    let payments;
+    if (req.query) {
+        payments = await retrievePayments(req.query);
+    } else {
+        payments = await retrievePayments();
+    }
     res.status(200).json(payments)
 }
 const getPayment = async (req, res) => {

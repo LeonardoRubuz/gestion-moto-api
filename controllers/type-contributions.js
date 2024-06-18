@@ -14,7 +14,12 @@ const addContributionType = async (req, res) => {
     }
 }
 const getContributionTypes = async (req, res) => {
-    const types = await retrieveContributionTypes()
+    let types;
+    if (req.query) {
+        types = await retrieveContributionTypes(req.query)
+    } else {
+        types = await retrieveContributionTypes()
+    }
     res.status(200).json(types)
 }
 const getContributionType = async (req, res) => {

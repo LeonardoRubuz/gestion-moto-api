@@ -11,8 +11,13 @@ const addProgram = async (req, res) => {
 
 
 const getPrograms = async (req, res) => {
-    const programs =  await retrievePrograms()
-    res.status(200).json(programs)
+    let programs;
+    if (req.query) {
+        programs =  await retrievePrograms(req.query);
+    } else {
+        programs =  await retrievePrograms();
+    }
+    res.status(200).json(programs);
 }
 
 

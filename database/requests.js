@@ -440,7 +440,7 @@ const createPayment = async (datas) => {
     }
 }
 
-const retrievePayments = async () => {
+const retrievePayments = async (query) => {
     const page = parseInt(query.page);
     const limit = parseInt(query.limit);
     try {
