@@ -8,7 +8,7 @@ const {
  } = require('../controllers/permissions');
 const router = express.Router()
 
-router.get("/")
+router.route("/")
 .get(getPermissions)
 .post(addPermission)
 

@@ -25,10 +25,20 @@ const createAssociation = async (association) => {
         return false
     }
 }
-const retrieveAssociations = async () => {
+const retrieveAssociations = async (query) => {
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit);
     try {
-        const associations = await prisma.association.findMany()
-        return associations
+        if (page && limit) {
+            const associations = await prisma.association.findMany({
+                skip : ((page - 1) * limit),
+                take : limit
+            });
+            return associations
+        } else {            
+            const associations = await prisma.association.findMany()
+            return associations
+        }
     } catch (error) {
         console.error(error);
     }
@@ -97,14 +107,30 @@ const createAssociationBranch = async (association_id, datas) => {
         return false
     }
 }
-const retrieveAssociationBranches = async (association_id) => {
+const retrieveAssociationBranches = async (association_id, query) => {
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit)
     try {
-        const branches = await prisma.succursale.findMany({
-            where: {
-                association_id: parseInt(association_id)
+        if (page && limit) {
+            if (association_id) {
+                const branches = await prisma.succursale.findMany({
+                    where : {
+                        association_id : parseInt(association_id)
+                    },
+                    skip : ((page - 1) * limit),
+                    take : limit
+                });
+                return branches;
             }
-        })
-        return branches
+            const branches = await prisma.succursale.findMany({
+                skip : ((page-1)*limit),
+                take : limit
+            })
+            return branches
+        } else {            
+            const branches = await prisma.succursale.findMany();
+            return branches;
+        }
     } catch (error) {
         console.error(error);
     }
@@ -172,14 +198,23 @@ const createAssociationNotif = async (association_id, datas) => {
         return false
     }
 }
-const retrieveAssociationNotifs = async (association_id) => {
+const retrieveAssociationNotifs = async (association_id, query) => {
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit);
     try {
-        const notifs = await prisma.notification.findMany({
-            where: {
-                association_id: parseInt(association_id)
-            }
-        })
-        return notifs
+        if (page && limit) {
+            const notifs = await prisma.notification.findMany({
+                where : {
+                    association_id : parseInt(association_id)
+                },
+                skip : ((page - 1) * limit),
+                take : limit
+            });
+            return notifs
+        } else {            
+            const notifs = await prisma.notification.findMany()
+            return notifs
+        }
     } catch (error) {
         console.error(error);
     }
@@ -244,15 +279,26 @@ const createContribution = async (datas) => {
         return false
     }
 }
-const retrieveContributions = async (association_id) => {
+const retrieveContributions = async (association_id, query) => {
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit); 
     try {
-        if (association_id) {
+        if (page && limit) {
+            if (association_id) {
+                const contribs = await prisma.cotisation.findMany({
+                    where: {
+                        association_id: parseInt(association_id)
+                    },
+                    skip : ((page-1)*limit),
+                    take : limit
+                })
+                return contribs
+            }
             const contribs = await prisma.cotisation.findMany({
-                where: {
-                    association_id: parseInt(association_id)
-                }
-            })
-            return contribs
+                skip : ((page-1)*limit),
+                take : limit
+            });
+            return contribs;
         } else {
             const contribs = await prisma.cotisation.findMany()
             return contribs
@@ -317,10 +363,20 @@ const createContributionType = async (datas) => {
         return false;
     }
 }
-const retrieveContributionTypes = async () => {
+const retrieveContributionTypes = async (query) => {
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit);
     try {
-        const types = await prisma.type_Cotisation.findMany();
-        return types;
+        if (page && limit) {
+            const types = await prisma.type_Cotisation.findMany({
+                skip : ((page-1)*limit),
+                take : limit
+            });
+            return types;
+        } else {
+            const types = await prisma.type_Cotisation.findMany();
+            return types;
+        }
     } catch (error) {
         console.error(error);
     }
@@ -368,8 +424,6 @@ const removeContributionType = async (type_id) => {
 }
 
 
-// Notifications requests handlers
-
 // Payments requests handlers
 
 const createPayment = async (datas) => {
@@ -387,9 +441,19 @@ const createPayment = async (datas) => {
 }
 
 const retrievePayments = async () => {
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit);
     try {
-        const payments = await prisma.paiement.findMany()
-        return payments;
+        if (page && limit) {
+            const payments = await prisma.paiement.findMany({
+                skip : ((page-1) * limit),
+                take : limit
+            });
+            return payments;
+        } else {
+            const payments = await prisma.paiement.findMany()
+            return payments;
+        }
     } catch (error) {
         console.error(error);
     }
@@ -455,14 +519,7 @@ const createPermission = async (datas) => {
         return false;
     }
 }
-const retrievePermissions = async () => {
-    try {
-        const permissions = await prisma.permission.findMany()
-        return permissions
-    } catch (error) {
-        console.error(error);
-    }
-}
+
 const retrievePermission = async (permission_id) => {
     try {
         const permission = await prisma.permission.findUnique({
@@ -502,7 +559,7 @@ const removePermission = async (permission_id) => {
     }
 }
 
-const paginatedPermissions = async (query) => {
+const retrievePermissions = async (query) => {
     const page = parseInt(query.page);
     const limit = parseInt(query.limit);
     try {
@@ -537,10 +594,20 @@ const createProgram = async (program) => {
         return false    // Failure to create an association entity
     }
 }
-const retrievePrograms = async () => {
+const retrievePrograms = async (query) => {
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit);
     try {
-        const programs = await prisma.programme.findMany()
-        return programs
+        if (page && limit) {
+            const programs = await prisma.programme.findMany({
+                skip: ((page - 1) * limit),
+                take: limit
+            });
+            return programs;
+        } else {
+            const programs = await prisma.programme.findMany()
+            return programs
+        }
     } catch (error) {
         console.error(error);
     }
@@ -609,19 +676,30 @@ const createUser = async (datas) => {
         return false;
     }
 }
-const retrieveUsers = async (profile_label) => {
+const retrieveUsers = async (profile_label, query) => {
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit);
     try {
         let users;
-        if (profile_label) {
-            console.log(profile_label);
-            users = await prisma.utilisateur.findMany({
-                where : {
-                    profil_label : profile_label
-                }
-            })
-        } else {
-            users = await prisma.utilisateur.findMany()
+        if (page && limit) {
+            if (profile_label) {
+                console.log(profile_label);
+                users = await prisma.utilisateur.findMany({
+                    where : {
+                        profil_label : profile_label
+                    },
+                    skip : ((page-1)*limit),
+                    take : limit
+                })
+            } else {
+                users = await prisma.utilisateur.findMany({
+                    skip : ((page-1)*limit),
+                    take : limit
+                    
+                })
+            }
         }
+        users = await prisma.utilisateur.findMany()
         return users;
     } catch (error) {
         console.error(error);
@@ -683,10 +761,18 @@ const createUserProfile = async (datas) => {
         return false;
     }
 }
-const retrieveUserProfiles = async () => {
+const retrieveUserProfiles = async (query) => {
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit);
     try {
+        if (page && limit) {
+            const profiles = await prisma.profil_Utilisateur.findMany({
+                skip :  ((page-1)*limit),
+                take : limit
+            });
+            return profiles;
+        }
         const profiles = await prisma.profil_Utilisateur.findMany();
-        console.log("Profiles",profiles);
         return profiles;
     } catch (error) {
         console.error(error);

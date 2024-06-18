@@ -3,7 +3,8 @@ const {
     retrievePermissions,
     retrievePermission,
     changePermission,
-    removePermission
+    removePermission,
+    paginatedPermissions
  } = require("../database/requests")
 
 const addPermission = async (req, res) => {
@@ -16,7 +17,12 @@ const addPermission = async (req, res) => {
 
 
 const getPermissions = async (req, res) => {
-    const perms = await retrievePermissions()
+    let perms;
+    if (req.query) {
+        perms = await paginatedPermissions(req.query)
+    }else{
+        perms = await paginatedPermissions()
+    }
     res.status(200).json(perms)
 }
 
