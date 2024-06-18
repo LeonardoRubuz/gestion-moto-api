@@ -32,7 +32,7 @@ const getAssociations = async (req, res) => {
     } else {
         associations = await retrieveAssociations()
     }
-    req.status(200).json(associations)
+    res.status(200).json(associations)
 }
 
 
@@ -46,7 +46,7 @@ const updateAssociation = async (req, res) => {
     if (!await changeAssociation(req.params.id, req.body)) {
         res.status(500).send("cannot update association")
     }else{
-        res.status(200).send("Association updates")
+        res.status(200).send("Association updated")
     }
 }
 

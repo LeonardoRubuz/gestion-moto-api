@@ -30,7 +30,7 @@ model Cotisation{
   id Int @id @unique @default(autoincrement())
   label String
   devise String
-  date_creation DateTime
+  date_creation DateTime @default(now())
   isActive Boolean
   // Relation fields
   association Association @relation(references: [id], fields: [association_id])
