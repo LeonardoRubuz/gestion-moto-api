@@ -17,8 +17,7 @@ const CustomStrategy = require('./config/passport');
 // Configurations
 dotenv.config()
 passport.use(CustomStrategy)
-const port = process.env.PORT ||  5000;
-const host = process.env.HOST ||  "127.0.0.1";
+const port = process.env.PORT 
 
 // Middlewares
 server.use(cors())
@@ -41,6 +40,6 @@ server.use("/profiles", profileRouter);
 server.use("/payments", paymentRouter);
 
 
-server.listen(port, host, () => {
-    console.log(`Server listening on http://${host}:${port}`);
+server.listen(port, () => {
+    console.log(`Server listening on port : ${port}`);
 })
