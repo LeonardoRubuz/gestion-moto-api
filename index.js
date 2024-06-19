@@ -24,22 +24,27 @@ const host = process.env.HOST ||  "127.0.0.1";
 server.use(cors())
 server.use(express.json())
 
+// Api Router 
+const apiRouter = express.Router();
+
 // Main route
-server.get("/", (req, res) => {
+apiRouter.get("/", (req, res) => {
     res.send("API de gestion de motos")
 })
 
 // Routers
-server.use(authRouter);
-server.use("/associations", associationRouter);
-server.use("/contributions", contributionRouter);
-server.use("/programs", programRouter);
-server.use("/permissions", permissionRouter);
-server.use("/contribution-types", contribTypeRouter);
-server.use("/users", userRouter);
-server.use("/profiles", profileRouter);
-server.use("/payments", paymentRouter);
+apiRouter.use(authRouter);
+apiRouter.use("/associations", associationRouter);
+apiRouter.use("/contributions", contributionRouter);
+apiRouter.use("/programs", programRouter);
+apiRouter.use("/permissions", permissionRouter);
+apiRouter.use("/contribution-types", contribTypeRouter);
+apiRouter.use("/users", userRouter);
+apiRouter.use("/profiles", profileRouter);
+apiRouter.use("/payments", paymentRouter);
 
+
+server.use("/api", apiRouter)
 
 server.listen(port, host, () => {
     console.log(`Server listening on http://${host}:${port}`);
