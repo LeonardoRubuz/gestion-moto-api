@@ -14,6 +14,7 @@ const profileRouter = require('./routes/profiles')
 const paymentRouter = require('./routes/payments');
 const LocalStrategy = require('./config/passport');
 const { findUserByMailOrPhone } = require('./database/requests');
+const checkUserAuthenticated = require('./middlewares/checkUserAuthenticated');
 
 // Configurations
 dotenv.config()
@@ -40,6 +41,7 @@ server.use(passport.initialize())
 
 // Api Router 
 const apiRouter = express.Router();
+apiRouter.use(checkUserAuthenticated)
 
 // Main route
 apiRouter.get("/", (req, res) => {
@@ -47,7 +49,6 @@ apiRouter.get("/", (req, res) => {
 })
 
 // Routers
-apiRouter.use(authRouter);
 apiRouter.use("/associations", associationRouter);
 apiRouter.use("/contributions", contributionRouter);
 apiRouter.use("/programs", programRouter);
@@ -57,8 +58,9 @@ apiRouter.use("/users", userRouter);
 apiRouter.use("/profiles", profileRouter);
 apiRouter.use("/payments", paymentRouter);
 
-
+server.use(authRouter)
 server.use("/api", apiRouter)
+
 
 server.listen(port, host, () => {
     console.log(`Server listening on http://${host}:${port}`);

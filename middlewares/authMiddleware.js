@@ -12,7 +12,8 @@ const authMiddleware = (req, res, next) => {
         const token = generateToken(user)
         res.status(200).json({
             "message": 'User authenticated',
-            "token" : token
+            "token" : token,
+            "user" : user
         })
     })(req, res, next)
 }
