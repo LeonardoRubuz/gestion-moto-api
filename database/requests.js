@@ -749,7 +749,7 @@ const removeUser = async (user_id) => {
 
 const findUserByMailOrPhone = async (email, phone) => {
     try {
-        const user = await prisma.utilisateur.findUnique({
+        const user = await prisma.utilisateur.findFirst({
             where : {
                 OR : [
                     {

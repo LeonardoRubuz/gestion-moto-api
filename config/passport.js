@@ -1,36 +1,29 @@
 const bcrypt = require('bcrypt');
-const custom = require('passport-custom')
-const { PrismaClient } = require('@prisma/client');
+const { findUserByMailOrPhone } = require('../database/requests');
+const local = require('passport-local');
 
-const prisma = new PrismaClient;
 
-const CustomStrategy = new custom.Strategy(
-    async (email, phone, password, done) => {
+const LocalStrategy = new local.Strategy(
+    { usernameField : "identifier", passwordField : "password" },
+    async (identifier, password, done) => {
         try {
-            const user = await prisma.utilisateur.findUnique({
-                where : {
-                    OR : [
-                        { email : email },
-                        { phone1 : phone}
-                    ]
-                }
-            });
+            const user = await findUserByMailOrPhone(identifier, identifier);
             if (!user) {
-                return done(null, false);
+                return done(null, false)
             }
-            bcrypt.compare(password, user.password, (error, isMatch) => {
-                if (error) {
-                    return done(null, false, error);
+            bcrypt.compare(password, user.password, (err, isMatch) => {
+                if (err) {
+                    return done(null, false, err);
                 }
                 if (!isMatch) {
-                    return done(null, false, { message : "Password Incorrect" });
+                    return done(null, false, { message : "Password incorrect" })
                 }
-                return done(null, user);
-            });
+                return done(null, user)
+            })
         } catch (error) {
-            res.status(500).send("Authentication error");
+            res.status(500).send("Error")
         }
     }
 )
 
-module.exports = CustomStrategy
+module.exports = LocalStrategy

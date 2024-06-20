@@ -12,12 +12,12 @@ const contribTypeRouter = require('./routes/type-contributions');
 const userRouter = require('./routes/users');
 const profileRouter = require('./routes/profiles')
 const paymentRouter = require('./routes/payments');
-const CustomStrategy = require('./config/passport');
+const LocalStrategy = require('./config/passport');
 const { findUserByMailOrPhone } = require('./database/requests');
 
 // Configurations
 dotenv.config()
-passport.use(CustomStrategy)
+passport.use(LocalStrategy)
 const port = process.env.PORT ||  5000;
 const host = process.env.HOST ||  "127.0.0.1";
 
@@ -25,8 +25,8 @@ passport.serializeUser((user, done) => {
     done(null, user.id);
 })
 
-passport.deserializeUser(async ({email, phone}, done) => {
-    const user = await findUserByMailOrPhone(email, phone);
+passport.deserializeUser(async (identifier, done) => {
+    const user = await findUserByMailOrPhone(identifier, identifier);
     if (user) {
         done(null, user);
     }
@@ -36,6 +36,7 @@ passport.deserializeUser(async ({email, phone}, done) => {
 // Middlewares
 server.use(cors())
 server.use(express.json())
+server.use(passport.initialize())
 
 // Api Router 
 const apiRouter = express.Router();

@@ -120,7 +120,7 @@ model Utilisateur{
   nom String
   prenom String
   postnom String
-  email String?
+  email String? @unique
   password String
   phone1 String
   phone2 String?
