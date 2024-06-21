@@ -58,7 +58,12 @@ const addUserProfile = async (req, res) => {
     }
 }
 const getUserProfiles = async (req, res) => {
-    const profiles = await retrieveUserProfiles();
+    let profiles;
+    if (req.query) {
+        profiles = await retrieveUserProfiles(req.query);
+    } else {
+        profiles = await retrieveUserProfiles();   
+    }
     res.status(200).json(profiles)
 }
 const getUserProfile = async (req, res) => {
