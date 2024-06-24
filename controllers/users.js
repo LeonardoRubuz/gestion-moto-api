@@ -20,7 +20,7 @@ const addUser = async (req, res) => {
 }
 const getUsers = async (req, res) => {
     let users;
-    if (req.query.profile) {
+    if (req.query) {
         users = await retrieveUsers(req.query.profile, req.query);
     } else {
         users = await retrieveUsers()
