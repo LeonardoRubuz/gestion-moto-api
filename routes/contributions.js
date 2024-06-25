@@ -8,7 +8,7 @@ const {
  } = require('../controllers/contributions');
 const router = express.Router()
 
-router.get("/")
+router.route("/")
 .get(getContributions)
 .post(addContribution)
 
