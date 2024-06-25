@@ -270,7 +270,12 @@ const createContribution = async (datas) => {
     try {
         await prisma.cotisation.create({
             data: {
-                ...datas
+                ...datas,
+                association : {
+                    connect: {
+                        id : parseInt(datas.association_id)
+                    }
+                }
             }
         })
         return true
