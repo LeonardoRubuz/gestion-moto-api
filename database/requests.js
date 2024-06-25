@@ -273,7 +273,12 @@ const createContribution = async (datas) => {
                 ...datas,
                 association : {
                     connect: {
-                        id : datas.association_id
+                        id : datas.association
+                    }
+                },
+                type_cotisation : {
+                    connect : {
+                        id : datas.type_cotisation
                     }
                 }
             }
