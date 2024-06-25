@@ -273,7 +273,7 @@ const createContribution = async (datas) => {
                 ...datas,
                 association : {
                     connect: {
-                        id : parseInt(datas.association_id)
+                        id : datas.association_id
                     }
                 }
             }
