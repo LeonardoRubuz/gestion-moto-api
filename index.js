@@ -12,12 +12,28 @@ const contribTypeRouter = require('./routes/type-contributions');
 const userRouter = require('./routes/users');
 const profileRouter = require('./routes/profiles')
 const paymentRouter = require('./routes/payments');
-const CustomStrategy = require('./config/passport');
+const LocalStrategy = require('./config/passport');
+const { findUserByMailOrPhone } = require('./database/requests');
+const checkUserAuthenticated = require('./middlewares/checkUserAuthenticated');
+
 
 // Configurations
 dotenv.config()
-passport.use(CustomStrategy)
+passport.use(LocalStrategy)
 const port = process.env.PORT 
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+})
+
+passport.deserializeUser(async (identifier, done) => {
+    const user = await findUserByMailOrPhone(identifier, identifier);
+    if (user) {
+        done(null, user);
+    }
+    done({ message : "User doesn't exist" }, false)
+});
+
 
 // Middlewares
 server.use(cors())

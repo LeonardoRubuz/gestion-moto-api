@@ -757,6 +757,29 @@ const removeUser = async (user_id) => {
     }
 }
 
+const findUserByMailOrPhone = async (email, phone) => {
+    try {
+        const user = await prisma.utilisateur.findFirst({
+            where : {
+                OR : [
+                    {
+                        email : {
+                            equals : email
+                        }
+                    },
+                    {
+                        phone1 : {
+                            equals : phone
+                        }
+                    }
+                ]
+            }
+        });
+        return user;
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 const createUserProfile = async (datas) => {
     try {
@@ -841,7 +864,7 @@ module.exports = {
     createContribution, retrieveContribution, retrieveContributions, changeContribution, removeContribution,
     createPermission, retrievePermissions, retrievePermission, changePermission, removePermission,
     createContributionType, retrieveContributionTypes, retrieveContributionType, changeContributionType, removeContributionType,
-    createUser, retrieveUsers, retrieveUser, changeUser, removeUser,
+    createUser, retrieveUsers, retrieveUser, changeUser, removeUser, findUserByMailOrPhone,
     createUserProfile, retrieveUserProfiles, retrieveUserProfile, changeUserProfile, removeUserProfile,
     createPayment, retrievePayments, retrievePayment, changePayment, removePayment
 };
