@@ -270,7 +270,17 @@ const createContribution = async (datas) => {
     try {
         await prisma.cotisation.create({
             data: {
-                ...datas
+                ...datas,
+                association : {
+                    connect: {
+                        id : datas.association
+                    }
+                },
+                type_cotisation : {
+                    connect : {
+                        id : datas.type_cotisation
+                    }
+                }
             }
         })
         return true
@@ -854,7 +864,7 @@ module.exports = {
     createContribution, retrieveContribution, retrieveContributions, changeContribution, removeContribution,
     createPermission, retrievePermissions, retrievePermission, changePermission, removePermission,
     createContributionType, retrieveContributionTypes, retrieveContributionType, changeContributionType, removeContributionType,
-    createUser, retrieveUsers, retrieveUser, changeUser, removeUser,
+    createUser, retrieveUsers, retrieveUser, changeUser, removeUser, findUserByMailOrPhone,
     createUserProfile, retrieveUserProfiles, retrieveUserProfile, changeUserProfile, removeUserProfile,
     createPayment, retrievePayments, retrievePayment, changePayment, removePayment,
     findUserByMailOrPhone

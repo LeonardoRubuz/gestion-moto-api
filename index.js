@@ -16,11 +16,11 @@ const LocalStrategy = require('./config/passport');
 const { findUserByMailOrPhone } = require('./database/requests');
 const checkUserAuthenticated = require('./middlewares/checkUserAuthenticated');
 
+
 // Configurations
 dotenv.config()
 passport.use(LocalStrategy)
-const port = process.env.PORT ||  5000;
-const host = process.env.HOST ||  "127.0.0.1";
+const port = process.env.PORT 
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -33,6 +33,7 @@ passport.deserializeUser(async (identifier, done) => {
     }
     done({ message : "User doesn't exist" }, false)
 });
+
 
 // Middlewares
 server.use(cors())
@@ -62,6 +63,6 @@ server.use(authRouter)
 server.use("/api", apiRouter)
 
 
-server.listen(port, host, () => {
-    console.log(`Server listening on http://${host}:${port}`);
+server.listen(port, () => {
+    console.log(`Server listening on port : ${port}`);
 })
