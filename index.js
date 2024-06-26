@@ -38,29 +38,22 @@ passport.deserializeUser(async (identifier, done) => {
 // Middlewares
 server.use(cors())
 server.use(express.json())
-server.use(passport.initialize())
-
-// Api Router 
-const apiRouter = express.Router();
-apiRouter.use(checkUserAuthenticated)
 
 // Main route
-apiRouter.get("/", (req, res) => {
+server.get("/", (req, res) => {
     res.send("API de gestion de motos")
 })
 
 // Routers
-apiRouter.use("/associations", associationRouter);
-apiRouter.use("/contributions", contributionRouter);
-apiRouter.use("/programs", programRouter);
-apiRouter.use("/permissions", permissionRouter);
-apiRouter.use("/contribution-types", contribTypeRouter);
-apiRouter.use("/users", userRouter);
-apiRouter.use("/profiles", profileRouter);
-apiRouter.use("/payments", paymentRouter);
-
-server.use(authRouter)
-server.use("/api", apiRouter)
+server.use(authRouter);
+server.use("/associations", associationRouter);
+server.use("/contributions", contributionRouter);
+server.use("/programs", programRouter);
+server.use("/permissions", permissionRouter);
+server.use("/contribution-types", contribTypeRouter);
+server.use("/users", userRouter);
+server.use("/profiles", profileRouter);
+server.use("/payments", paymentRouter);
 
 
 server.listen(port, () => {

@@ -13,7 +13,7 @@ CREATE TABLE "Cotisation" (
     "id" SERIAL NOT NULL,
     "label" TEXT NOT NULL,
     "devise" TEXT NOT NULL,
-    "date_creation" TIMESTAMP(3) NOT NULL,
+    "date_creation" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "isActive" BOOLEAN NOT NULL,
     "association_id" INTEGER NOT NULL,
     "type_cotisation_id" INTEGER NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE "Notification" (
     "id" SERIAL NOT NULL,
     "titre" TEXT NOT NULL,
     "message" TEXT NOT NULL,
-    "date_creation" TIMESTAMP(3) NOT NULL,
+    "date_creation" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "date_envoi" TIMESTAMP(3),
     "association_id" INTEGER NOT NULL,
 
@@ -112,7 +112,7 @@ CREATE TABLE "Utilisateur" (
     "lieu_naissance" TEXT NOT NULL,
     "date_naissance" DATE NOT NULL,
     "association_id" INTEGER,
-    "profil_id" INTEGER NOT NULL,
+    "profil_label" TEXT NOT NULL,
 
     CONSTRAINT "Utilisateur_pkey" PRIMARY KEY ("id")
 );
@@ -145,6 +145,9 @@ CREATE UNIQUE INDEX "Permission_id_key" ON "Permission"("id");
 CREATE UNIQUE INDEX "Profil_Utilisateur_id_key" ON "Profil_Utilisateur"("id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Profil_Utilisateur_label_key" ON "Profil_Utilisateur"("label");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Programme_id_key" ON "Programme"("id");
 
 -- CreateIndex
@@ -152,6 +155,9 @@ CREATE UNIQUE INDEX "Succursale_id_key" ON "Succursale"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Type_Cotisation_id_key" ON "Type_Cotisation"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Utilisateur_email_key" ON "Utilisateur"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_PermissionToProfil_Utilisateur_AB_unique" ON "_PermissionToProfil_Utilisateur"("A", "B");
@@ -187,7 +193,7 @@ ALTER TABLE "Succursale" ADD CONSTRAINT "Succursale_association_id_fkey" FOREIGN
 ALTER TABLE "Utilisateur" ADD CONSTRAINT "Utilisateur_association_id_fkey" FOREIGN KEY ("association_id") REFERENCES "Association"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Utilisateur" ADD CONSTRAINT "Utilisateur_profil_id_fkey" FOREIGN KEY ("profil_id") REFERENCES "Profil_Utilisateur"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Utilisateur" ADD CONSTRAINT "Utilisateur_profil_label_fkey" FOREIGN KEY ("profil_label") REFERENCES "Profil_Utilisateur"("label") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_PermissionToProfil_Utilisateur" ADD CONSTRAINT "_PermissionToProfil_Utilisateur_A_fkey" FOREIGN KEY ("A") REFERENCES "Permission"("id") ON DELETE CASCADE ON UPDATE CASCADE;

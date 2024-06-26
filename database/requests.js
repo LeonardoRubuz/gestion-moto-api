@@ -272,13 +272,13 @@ const createContribution = async (datas) => {
             data: {
                 ...datas,
                 association : {
-                    connect: {
-                        id : datas.association
+                    connect : {
+                        id : parseInt(datas.association)
                     }
                 },
                 type_cotisation : {
                     connect : {
-                        id : datas.type_cotisation
+                        id : parseInt(datas.association)
                     }
                 }
             }
@@ -286,7 +286,7 @@ const createContribution = async (datas) => {
         return true
     } catch (error) {
         console.error(error);
-        return false
+        return false;
     }
 }
 const retrieveContributions = async (association_id, query) => {

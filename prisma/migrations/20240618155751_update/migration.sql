@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Cotisation" ALTER COLUMN "date_creation" SET DEFAULT CURRENT_TIMESTAMP;
