@@ -67,6 +67,7 @@ model Notification{
 model Paiement{
   id Int @id @unique @default(autoincrement())
   reference String
+  devise String
   montant Float
   //Relation fields
   cotisation Cotisation @relation(references: [id], fields: [cotisation_id])
