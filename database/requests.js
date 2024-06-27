@@ -440,7 +440,17 @@ const createPayment = async (datas) => {
     try {
         await prisma.paiement.create({
             data : {
-                ...datas
+                ...datas,
+                cotisation : {
+                    connect : {
+                        id : datas.cotisation
+                    }
+                },
+                utilisateur : {
+                    connect : {
+                        id : datas.utilisateur
+                    }
+                }
             }
         });
         return true;
