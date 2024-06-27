@@ -299,6 +299,14 @@ const retrieveContributions = async (association_id, query) => {
                     where: {
                         association_id: parseInt(association_id)
                     },
+                    include : {
+                        paiements : {
+                            select : {
+                                id : true,
+                                utilisateur_id : true
+                            }
+                        }
+                    },
                     skip : ((page-1)*limit),
                     take : limit
                 })
