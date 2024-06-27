@@ -11,7 +11,7 @@ const addContribution = async (req, res) => {
     if (!await createContribution(req.body)) {
         res.status(500).send("Cannot create a contribution")
     } else {
-        res.status(2201).send("Contribution created")
+        res.status(201).send("Contribution created")
     }
 }
 
