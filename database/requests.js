@@ -314,11 +314,28 @@ const retrieveContributions = async (association_id, query) => {
             }
             const contribs = await prisma.cotisation.findMany({
                 skip : ((page-1)*limit),
-                take : limit
+                take : limit,
+                include : {
+                    paiements : {
+                        select : {
+                            id : true,
+                            utilisateur_id : true
+                        }
+                    }
+                }
             });
             return contribs;
         } else {
-            const contribs = await prisma.cotisation.findMany()
+            const contribs = await prisma.cotisation.findMany({
+                    include : {
+                        paiements : {
+                            select : {
+                                id : true,
+                                utilisateur_id : true
+                            }
+                        }
+                    },
+            })
             return contribs
         }
     } catch (error) {
