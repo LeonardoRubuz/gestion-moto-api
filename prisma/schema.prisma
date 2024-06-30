@@ -15,7 +15,7 @@ datasource db {
 
 model Association{
   id Int @id @unique @default(autoincrement())
-  nom String
+  nom String @unique
   description String
   // Relation fields
   notifications Notification[]
@@ -33,8 +33,8 @@ model Cotisation{
   date_creation DateTime @default(now())
   isActive Boolean
   // Relation fields
-  association Association @relation(references: [id], fields: [association_id])
-  association_id Int
+  association Association @relation(references: [nom], fields: [association_label])
+  association_label String
   type_cotisation Type_Cotisation @relation(references: [id], fields: [type_cotisation_id])
   type_cotisation_id Int
   paiements Paiement[]
@@ -58,8 +58,8 @@ model Notification{
   date_creation DateTime @default(now())
   date_envoi DateTime?
   // Relation fields
-  association Association @relation(references: [id], fields: [association_id])
-  association_id Int
+  association Association @relation(references: [nom], fields: [association_label])
+  association_label String
 
 }
 
@@ -129,8 +129,8 @@ model Utilisateur{
   lieu_naissance String
   date_naissance DateTime @db.Date
   // Relation fields
-  association Association? @relation(references: [id], fields: [association_id])
-  association_id Int?
+  association Association? @relation(references: [nom], fields: [association_label])
+  association_label String?
   profil Profil_Utilisateur @relation(references: [label], fields: [profil_label])
   profil_label String
   paiements Paiement[]

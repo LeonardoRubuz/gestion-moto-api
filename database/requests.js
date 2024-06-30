@@ -32,11 +32,28 @@ const retrieveAssociations = async (query) => {
         if (page && limit) {
             const associations = await prisma.association.findMany({
                 skip : ((page - 1) * limit),
-                take : limit
+                take : limit,
+                include : {
+                    notifications : {
+                        select : {
+                            id : true,
+                            titre : true
+                        }
+                    }
+                }
             });
             return associations
         } else {            
-            const associations = await prisma.association.findMany()
+            const associations = await prisma.association.findMany({
+                include : {
+                    notifications : {
+                        select : {
+                            id : true,
+                            titre : true
+                        }
+                    }
+                }
+            })
             return associations
         }
     } catch (error) {
@@ -48,6 +65,14 @@ const retrieveAssociation = async (association_id) => {
         const association = await prisma.association.findUnique({
             where: {
                 id: parseInt(association_id)
+            },
+            include : {
+                notifications : {
+                    select : {
+                        id : true,
+                        titre : true
+                    }
+                }
             }
         })
         if (!association) {
@@ -302,8 +327,10 @@ const retrieveContributions = async (association_id, query) => {
                     include : {
                         paiements : {
                             select : {
-                                id : true,
-                                utilisateur_id : true
+                                reference : true,
+                                utilisateur_id : true,
+                                montant : true,
+                                devise : true
                             }
                         }
                     },
@@ -318,8 +345,10 @@ const retrieveContributions = async (association_id, query) => {
                 include : {
                     paiements : {
                         select : {
-                            id : true,
-                            utilisateur_id : true
+                            reference : true,
+                            utilisateur_id : true,
+                            montant : true,
+                            devise : true
                         }
                     }
                 }
@@ -330,8 +359,10 @@ const retrieveContributions = async (association_id, query) => {
                     include : {
                         paiements : {
                             select : {
-                                id : true,
-                                utilisateur_id : true
+                                reference : true,
+                                utilisateur_id : true,
+                                montant : true,
+                                devise : true
                             }
                         }
                     },
@@ -347,6 +378,16 @@ const retrieveContribution = async (contrib_id) => {
         const contrib = await prisma.cotisation.findUnique({
             where: {
                 id: parseInt(contrib_id)
+            },
+            include : {
+                paiements : {
+                    select : {
+                        reference : true,
+                        utilisateur_id : true,
+                        montant : true,
+                        devise : true
+                    }
+                }
             }
         })
         return contrib
@@ -618,11 +659,27 @@ const retrievePermissions = async (query) => {
         if (page && limit) {
             const perms = await prisma.permission.findMany({
                 skip: ((page - 1) * limit),
-                take: limit
+                take: limit,
+                include : {
+                    profils_utilisateurs : {
+                        select : {
+                            label : true
+                        }
+                    },
+                    
+                }
             })
             return perms
         } else {
-            const perms = await prisma.permission.findMany()
+            const perms = await prisma.permission.findMany({
+                include : {
+                    profils_utilisateurs : {
+                        select : {
+                            label : true
+                        }
+                    }
+                }
+            })
             return perms
         }
     } catch (error) {
@@ -653,11 +710,28 @@ const retrievePrograms = async (query) => {
         if (page && limit) {
             const programs = await prisma.programme.findMany({
                 skip: ((page - 1) * limit),
-                take: limit
+                take: limit,
+                include : {
+                    associations : {
+                        select : {
+                            id : true,
+                            nom : true
+                        }
+                    }
+                }
             });
             return programs;
         } else {
-            const programs = await prisma.programme.findMany()
+            const programs = await prisma.programme.findMany({
+                include : {
+                    associations : {
+                        select : {
+                            id : true,
+                            nom : true
+                        }
+                    }
+                }
+            })
             return programs
         }
     } catch (error) {
@@ -669,6 +743,14 @@ const retrieveProgram = async (program_id) => {
         const program = await prisma.programme.findUnique({
             where: {
                 id: parseInt(program_id)
+            },
+            include : {
+                associations : {
+                    select : {
+                        id : true,
+                        nom : true
+                    }
+                }
             }
         })
         if (!program) {
@@ -735,23 +817,73 @@ const retrieveUsers = async (profile_label, query) => {
         let users;
         if (page && limit) {
             if (profile_label) {
-                console.log(profile_label);
                 users = await prisma.utilisateur.findMany({
                     where : {
                         profil_label : profile_label
                     },
                     skip : ((page-1)*limit),
-                    take : limit
+                    take : limit,
+                    select :  {
+                        id : true,
+                        nom : true,
+                        prenom : true,
+                        postnom : true,
+                        phone1 : true,
+                        association_label : true,
+
+                    },
+                    include : {
+                        paiements : {
+                            select : {
+                                reference : true,
+                                montant : true,
+                                devise : true,
+                                cotisation_label : true
+                            }
+                        }
+                    }
                 })
             } else {
                 users = await prisma.utilisateur.findMany({
                     skip : ((page-1)*limit),
-                    take : limit
+                    take : limit,
+                    select :  {
+                        id : true,
+                        nom : true,
+                        prenom : true,
+                        postnom : true,
+                        phone1 : true,
+                        association_label : true,
+
+                    },
+                    include : {
+                        paiements : {
+                            select : {
+                                reference : true,
+                                montant : true,
+                                devise : true,
+                                cotisation_label : true
+                            }
+                        }
+                    }
                     
                 })
             }
         }
-        users = await prisma.utilisateur.findMany()
+        users = await prisma.utilisateur.findMany({
+            select :  {
+                id : true,
+                nom : true,
+                prenom : true,
+                postnom : true,
+                email:  true,
+                phone1 : true,
+                phone2 : true,
+                association_label : true,
+                profil_label : true
+
+            }
+        })
         return users;
     } catch (error) {
         console.error(error);
@@ -762,6 +894,18 @@ const retrieveUser = async (user_id) => {
         const user = await prisma.utilisateur.findUnique({
             where : {
                 id : user_id
+            },
+            select :  {
+                id : true,
+                nom : true,
+                prenom : true,
+                postnom : true,
+                email:  true,
+                phone1 : true,
+                phone2 : true,
+                association_label : true,
+                profil_label : true
+
             }
         });
         return user;
@@ -843,11 +987,36 @@ const retrieveUserProfiles = async (query) => {
         if (page && limit) {
             const profiles = await prisma.profil_Utilisateur.findMany({
                 skip :  ((page-1)*limit),
-                take : limit
+                take : limit,
+                include : {
+                    utilisateur : {
+                        select : {
+                            id : true
+                        }
+                    },
+                    permissions : {
+                        select : {
+                            label : true
+                        }
+                    }
+                }
             });
             return profiles;
         }
-        const profiles = await prisma.profil_Utilisateur.findMany();
+        const profiles = await prisma.profil_Utilisateur.findMany({
+            include : {
+                utilisateur : {
+                    select : {
+                        id : true
+                    }
+                },
+                permissions : {
+                    select : {
+                        label : true
+                    }
+                }
+            }
+        });
         return profiles;
     } catch (error) {
         console.error(error);
@@ -858,6 +1027,18 @@ const retrieveUserProfile = async (profile_id) => {
         const profile = await prisma.profil_Utilisateur.findUnique({
             where : {
                 id : parseInt(profile_id)
+            },
+            include : {
+                utilisateur : {
+                    select : {
+                        id : true
+                    }
+                },
+                permissions : {
+                    select : {
+                        label : true
+                    }
+                }
             }
         });
         return profile;
