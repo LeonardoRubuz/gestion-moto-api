@@ -570,6 +570,13 @@ const retrievePermission = async (permission_id) => {
         const permission = await prisma.permission.findUnique({
             where: {
                 id: parseInt(permission_id)
+            },
+            include : {
+                profils_utilisateurs : {
+                    select : {
+                        label : true
+                    }
+                }
             }
         });
         return permission

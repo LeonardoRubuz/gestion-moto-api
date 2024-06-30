@@ -28,7 +28,7 @@ model Association{
 
 model Cotisation{
   id Int @id @unique @default(autoincrement())
-  label String
+  label String @unique
   devise String
   date_creation DateTime @default(now())
   isActive Boolean
@@ -70,8 +70,8 @@ model Paiement{
   devise String
   montant Float
   //Relation fields
-  cotisation Cotisation @relation(references: [id], fields: [cotisation_id])
-  cotisation_id Int
+  cotisation Cotisation @relation(references: [label], fields: [cotisation_label])
+  cotisation_label String
   utilisateur Utilisateur @relation(references: [id], fields: [utilisateur_id])
   utilisateur_id String
 }
@@ -95,7 +95,7 @@ model Profil_Utilisateur{
 
 model Programme{
   id Int @id @unique @default(autoincrement())
-  nom String
+  nom String @unique
   portee String
   telephone String
   email String
