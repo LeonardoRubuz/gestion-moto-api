@@ -317,12 +317,12 @@ const createContribution = async (datas) => {
                 ...datas,
                 association : {
                     connect : {
-                        id : datas.association
+                        nom : datas.association
                     }
                 },
                 type_cotisation : {
                     connect : {
-                        id : datas.association
+                        label : datas.association
                     }
                 }
             }
