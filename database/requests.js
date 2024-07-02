@@ -910,8 +910,8 @@ const retrieveUsers = async (profile_label, query) => {
     const limit = parseInt(query.limit);
     try {
         let users;
-        if (page && limit) {
-            if (profile_label) {
+        if (profile_label) {
+            if (page && limit) {
                 users = await prisma.utilisateur.findMany({
                     where : {
                         profil_label : profile_label
@@ -940,8 +940,9 @@ const retrieveUsers = async (profile_label, query) => {
                 })
             } else {
                 users = await prisma.utilisateur.findMany({
-                    skip : ((page-1)*limit),
-                    take : limit,
+                    where : {
+                        profil_label : profile_label
+                    },
                     select :  {
                         id : true,
                         nom : true,
