@@ -935,15 +935,7 @@ const retrieveUsers = async (profile_label, query) => {
                     },
                     skip : ((page-1)*limit),
                     take : limit,
-                    select :  {
-                        id : true,
-                        nom : true,
-                        prenom : true,
-                        postnom : true,
-                        phone1 : true,
-                        association_label : true,
-
-                    },
+                    
                     include : {
                         paiements : {
                             select : {
@@ -959,15 +951,6 @@ const retrieveUsers = async (profile_label, query) => {
                 users = await prisma.utilisateur.findMany({
                     where : {
                         profil_label : profile_label
-                    },
-                    select :  {
-                        id : true,
-                        nom : true,
-                        prenom : true,
-                        postnom : true,
-                        phone1 : true,
-                        association_label : true,
-
                     },
                     include : {
                         paiements : {
