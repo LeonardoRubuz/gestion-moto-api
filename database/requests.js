@@ -903,6 +903,11 @@ const createUser = async (datas) => {
                 ...datas,
                 date_naissance : new Date(datas.date_naissance),
                 password : hashedPassword,
+                association : {
+                    connect : {
+                        nom : datas.association
+                    }
+                },
                 profil : {
                     connect : {
                         label : datas.profil
