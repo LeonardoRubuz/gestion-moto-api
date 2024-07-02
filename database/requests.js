@@ -524,7 +524,12 @@ const createNotification = async (datas) => {
     try {
         await prisma.notification.create({
             data: {
-                ...datas
+                ...datas,
+                association : {
+                    connect : {
+                        nom : datas.association
+                    }
+                }
             }
         })
         return true
