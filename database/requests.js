@@ -901,7 +901,13 @@ const createUser = async (datas) => {
         await prisma.utilisateur.create({
             data : {
                 ...datas,
-                password : hashedPassword
+                date_naissance : new Date(datas.date_naissance),
+                password : hashedPassword,
+                profil : {
+                    connect : {
+                        label : datas.profil
+                    }
+                }
                 
             }
         });

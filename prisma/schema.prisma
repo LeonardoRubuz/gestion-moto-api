@@ -69,6 +69,7 @@ model Paiement{
   reference String
   devise String
   montant Float
+  created_at DateTime @default(now())
   //Relation fields
   cotisation Cotisation @relation(references: [label], fields: [cotisation_label])
   cotisation_label String
