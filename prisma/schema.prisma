@@ -19,8 +19,8 @@ model Association{
   description String
   // Relation fields
   notifications Notification[]
-  programme Programme @relation(references: [id], fields: [programme_id])
-  programme_id Int
+  programme Programme @relation(references: [nom], fields: [programme_label])
+  programme_label String
   succursales Succursale[]
   cotisations Cotisation[]
   utilisateurs Utilisateur[]
@@ -35,8 +35,8 @@ model Cotisation{
   // Relation fields
   association Association @relation(references: [nom], fields: [association_label])
   association_label String
-  type_cotisation Type_Cotisation @relation(references: [id], fields: [type_cotisation_id])
-  type_cotisation_id Int
+  type_cotisation Type_Cotisation @relation(references: [label], fields: [type_cotisation_label])
+  type_cotisation_label String
   paiements Paiement[]
 }
 
@@ -112,7 +112,7 @@ model Succursale{
 
 model Type_Cotisation{
   id Int @id @unique @default(autoincrement())
-  label String
+  label String @unique
   //Relation fields
   cotisations Cotisation[]
 }

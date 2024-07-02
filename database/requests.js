@@ -39,6 +39,12 @@ const retrieveAssociations = async (query) => {
                             id : true,
                             titre : true
                         }
+                    },
+                    succursales : {
+                        select : {
+                            id: true,
+                            nom : true
+                        }
                     }
                 }
             });
@@ -50,6 +56,12 @@ const retrieveAssociations = async (query) => {
                         select : {
                             id : true,
                             titre : true
+                        }
+                    },
+                    succursales : {
+                        select : {
+                            id: true,
+                            nom : true
                         }
                     }
                 }
@@ -71,6 +83,12 @@ const retrieveAssociation = async (association_id) => {
                     select : {
                         id : true,
                         titre : true
+                    }
+                },
+                succursales : {
+                    select : {
+                        id: true,
+                        nom : true
                     }
                 }
             }
@@ -498,6 +516,83 @@ const removeContributionType = async (type_id) => {
         return false;
     }
 }
+
+// Notifications requests handlers
+
+const createNotification = async (datas) => {
+    try {
+        await prisma.notification.create({
+            data: {
+                ...datas
+            }
+        })
+        return true
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+}
+const retrieveNotifications = async (query) => {
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit);
+    try {
+        if (page && limit) {
+            const notifs = await prisma.notification.findMany({
+                skip : ((page - 1) * limit),
+                take : limit
+            });
+            return notifs
+        } else {            
+            const notifs = await prisma.notification.findMany()
+            return notifs
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+const retrieveNotification = async (notif_id) => {
+    try {
+        const notif = await prisma.notification.findUnique({
+            where: {
+                id: parseInt(notif_id)
+            }
+        })
+        return notif
+    } catch (error) {
+        console.error(error);
+    }
+}
+const changeNotification = async (notif_id, datas) => {
+    try {
+        await prisma.notification.update({
+            where: {
+                id: parseInt(notif_id)
+            },
+            data: {
+                ...datas
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+const removeNotification = async (notif_id) => {
+    try {
+        await prisma.notification.delete({
+            where: {
+                id: parseInt(notif_id)
+            }
+        })
+        return true
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+}
+
+
 
 
 // Payments requests handlers
@@ -1084,6 +1179,7 @@ module.exports = {
     createProgram, retrievePrograms, retrieveProgram, changeProgram, removeProgram,
     createAssociationBranch, retrieveAssociationBranches, retrieveAssociationBranch, changeAssociationBranch, removeAssociationBranch,
     createAssociationNotif, retrieveAssociationNotifs, retrieveAssociationNotif, changeAssociationNotif, removeAssociationNotif,
+    createNotification, retrieveNotifications, retrieveNotification, changeNotification, removeNotification,
     createContribution, retrieveContribution, retrieveContributions, changeContribution, removeContribution,
     createPermission, retrievePermissions, retrievePermission, changePermission, removePermission,
     createContributionType, retrieveContributionTypes, retrieveContributionType, changeContributionType, removeContributionType,

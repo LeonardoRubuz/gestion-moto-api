@@ -6,6 +6,7 @@ const passport = require('passport');
 const authRouter = require('./routes/auth');
 const associationRouter = require('./routes/associations');
 const contributionRouter = require('./routes/contributions');
+const notificationRouter = require('./routes/notifications');
 const permissionRouter = require('./routes/permissions');
 const programRouter = require('./routes/programs');
 const contribTypeRouter = require('./routes/type-contributions');
@@ -48,6 +49,7 @@ server.get("/", (req, res) => {
 server.use(authRouter);
 server.use("/associations", associationRouter);
 server.use("/contributions", contributionRouter);
+server.use("/notifications", notificationRouter);
 server.use("/programs", programRouter);
 server.use("/permissions", permissionRouter);
 server.use("/contribution-types", contribTypeRouter);
