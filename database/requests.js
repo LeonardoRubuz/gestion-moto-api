@@ -14,7 +14,7 @@ const createAssociation = async (association) => {
                 ...association,
                 programme: {
                     connect: {
-                        id: association.programme
+                        nom: association.programme
                     }
                 }
             }
@@ -25,6 +25,7 @@ const createAssociation = async (association) => {
         return false
     }
 }
+
 const retrieveAssociations = async (query) => {
     const page = parseInt(query.page);
     const limit = parseInt(query.limit);
