@@ -104,20 +104,80 @@ const retrieveAssociation = async (association_id) => {
 }
 const changeAssociation = async (association_id, datas) => {
     try {
-        await prisma.association.update({
-            where: {
-                id: parseInt(association_id)
-            },
-            data: {
-                ...datas
+        // Commencez une transaction
+        await prisma.$transaction(async (prisma) => {
+            // Récupérez l'ancien nom de l'association
+            const association = await prisma.association.findUnique({
+                where: {
+                    id: parseInt(association_id)
+                }
+            });
+
+            if (!association) {
+                throw new Error('Association not found');
             }
-        })
-        return true
+
+            const oldNom = association.nom;
+            const newNom = datas.nom;
+
+            // Mettez à jour le nom de l'association
+            await prisma.association.update({
+                where: {
+                    id: parseInt(association_id)
+                },
+                data: {
+                    ...datas
+                }
+            });
+
+            // Mettez à jour les références dans les autres tables
+            await prisma.notification.updateMany({
+                where: {
+                    association_label: oldNom
+                },
+                data: {
+                    association_label: newNom
+                }
+            });
+
+            await prisma.cotisation.updateMany({
+                where: {
+                    association_label: oldNom
+                },
+                data: {
+                    association_label: newNom
+                }
+            });
+
+            await prisma.utilisateur.updateMany({
+                where: {
+                    association_label: oldNom
+                },
+                data: {
+                    association_label: newNom
+                }
+            });
+
+            await prisma.succursale.updateMany({
+                where: {
+                    association_id: parseInt(association_id)
+                },
+                data: {
+                    association: {
+                        connect: {
+                            id: parseInt(association_id)
+                        }
+                    }
+                }
+            });
+        });
+
+        return true;
     } catch (error) {
         console.error(error);
-        return false
+        return false;
     }
-}
+};
 const removeAssociation = async (association_id) => {
     try {
         await prisma.association.delete({
@@ -897,89 +957,67 @@ const removeProgram = async (program_id) => {
 
 const createUser = async (datas) => {
     try {
-        const hashedPassword = bcrypt.hashSync(datas.password, 15)
-        await prisma.utilisateur.create({
-            data : {
-                ...datas,
-                date_naissance : new Date(datas.date_naissance),
-                password : hashedPassword,
-                association : {
-                    connect : {
-                        nom : datas.association
-                    }
-                },
-                profil : {
-                    connect : {
-                        label : datas.profil
-                    }
+        const hashedPassword = bcrypt.hashSync(datas.password, 15);
+        
+        const userData = {
+            ...datas,
+            date_naissance: new Date(datas.date_naissance),
+            password: hashedPassword,
+            profil: {
+                connect: {
+                    label: datas.profil
                 }
-                
             }
+        };
+
+        if (datas.association) {
+            userData.association = {
+                connect: {
+                    nom: datas.association
+                }
+            };
+        }
+
+        await prisma.utilisateur.create({
+            data: userData
         });
+
         return true;
     } catch (error) {
         console.error(error);
         return false;
     }
-}
-const retrieveUsers = async (profile_label, query) => {
+};
+const retrieveUsers = async (query) => {
     const page = parseInt(query.page);
     const limit = parseInt(query.limit);
+    const profile = query.profile
     try {
         let users;
-        if (profile_label) {
-            if (page && limit) {
-                users = await prisma.utilisateur.findMany({
-                    where : {
-                        profil_label : profile_label
-                    },
-                    skip : ((page-1)*limit),
-                    take : limit,
-                    
-                    include : {
-                        paiements : {
-                            select : {
-                                reference : true,
-                                montant : true,
-                                devise : true,
-                                cotisation_label : true
-                            }
-                        }
-                    }
-                })
-            } else {
-                users = await prisma.utilisateur.findMany({
-                    where : {
-                        profil_label : profile_label
-                    },
-                    include : {
-                        paiements : {
-                            select : {
-                                reference : true,
-                                montant : true,
-                                devise : true,
-                                cotisation_label : true
-                            }
-                        }
-                    }
-                    
-                })
-            }
+        if (profile && page && limit) {
+            users = await prisma.utilisateur.findMany({
+                where : {
+                    profil_label : profile
+                },
+                skip : ((page-1)*limit),
+                take : limit
+            })
+             return users;
+        } else if (profile){
+            users = await prisma.utilisateur.findMany({
+                where : {
+                    profil_label : profile
+                }
+            })
+            return users;
+        }else if(page && limit){
+            users = await prisma.utilisateur.findMany({
+                skip : ((page-1)*limit),
+                take : limit
+            })
+            return users;
         }
-        users = await prisma.utilisateur.findMany({
-            select :  {
-                id : true,
-                nom : true,
-                prenom : true,
-                postnom : true,
-                email:  true,
-                phone1 : true,
-                phone2 : true,
-                association_label : true,
-                profil_label : true
-
-            }
-        })
+        users = await prisma.utilisateur.findMany()
         return users;
     } catch (error) {
         console.error(error);
