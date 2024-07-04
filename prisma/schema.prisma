@@ -19,8 +19,8 @@ model Association{
   description String
   // Relation fields
   notifications Notification[]
-  programme Programme @relation(references: [nom], fields: [programme_label])
-  programme_label String
+  programme Programme? @relation(references: [nom], fields: [programme_label])
+  programme_label String?
   succursales Succursale[]
   cotisations Cotisation[]
   utilisateurs Utilisateur[]

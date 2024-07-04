@@ -158,18 +158,21 @@ const changeAssociation = async (association_id, datas) => {
                 }
             });
 
-            await prisma.succursale.updateMany({
-                where: {
-                    association_id: parseInt(association_id)
-                },
-                data: {
-                    association: {
-                        connect: {
-                            id: parseInt(association_id)
+            const relatedBranches = await prisma.succursale.findMany()
+            if (relatedBranches.length !== 0) {
+                await prisma.succursale.updateMany({
+                    where: {
+                        association_id: parseInt(association_id)
+                    },
+                    data: {
+                        association: {
+                            connect: {
+                                id: parseInt(association_id)
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         });
 
         return true;
@@ -938,11 +941,19 @@ const changeProgram = async (program_id, datas) => {
         return false
     }
 }
-const removeProgram = async (program_id) => {
+const removeProgram = async (program_label) => {
     try {
+        await prisma.association.updateMany({
+            where : {
+                programme_label : program_label
+            },
+            data : {
+                programme_label : null
+            }
+        })
         await prisma.programme.delete({
             where: {
-                id: parseInt(program_id)
+                nom : program_label
             }
         })
         return true

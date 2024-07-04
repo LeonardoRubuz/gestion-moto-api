@@ -15,6 +15,8 @@ router.route("/")
 router.route("/:id")
 .get(getUser)
 .put(updateUser)
+
+router.route("/:label")
 .delete(deleteUser)
 
 module.exports = router;

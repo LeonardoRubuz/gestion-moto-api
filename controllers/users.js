@@ -39,10 +39,10 @@ const updateUser = async (req, res) => {
     }
 }
 const deleteUser = async (req, res) => {
-    if (!await removeUser(req.params.id)) {
-        res.status(500).send("Cannot update user");        
+    if (!await removeUser(req.params.label)) {
+        res.status(500).send("Cannot delete user");        
     } else {
-        res.status(200).send("User updated");
+        res.status(200).send("User deleted");
     }
 }
 
