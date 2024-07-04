@@ -131,32 +131,41 @@ const changeAssociation = async (association_id, datas) => {
             });
 
             // Mettez à jour les références dans les autres tables
-            await prisma.notification.updateMany({
-                where: {
-                    association_label: oldNom
-                },
-                data: {
-                    association_label: newNom
-                }
-            });
+            const relatedNotifs = await prisma.notifcation.findMany()
+            if (relatedNotifs.length !== 0) {
+                await prisma.notification.updateMany({
+                    where: {
+                        association_label: oldNom
+                    },
+                    data: {
+                        association_label: newNom
+                    }
+                });
+            }
 
-            await prisma.cotisation.updateMany({
-                where: {
-                    association_label: oldNom
-                },
-                data: {
-                    association_label: newNom
-                }
-            });
+            const relatedContribs = await prisma.cotisation.findMany()
+            if (relatedContribs.length !== 0) {                
+                await prisma.cotisation.updateMany({
+                    where: {
+                        association_label: oldNom
+                    },
+                    data: {
+                        association_label: newNom
+                    }
+                });
+            }
 
-            await prisma.utilisateur.updateMany({
-                where: {
-                    association_label: oldNom
-                },
-                data: {
-                    association_label: newNom
-                }
-            });
+            const relatedUsers = await prisma.utilisateur.findMany()
+            if (relatedUsers.length !==0) {
+                await prisma.utilisateur.updateMany({
+                    where: {
+                        association_label: oldNom
+                    },
+                    data: {
+                        association_label: newNom
+                    }
+                });
+            }
 
             const relatedBranches = await prisma.succursale.findMany()
             if (relatedBranches.length !== 0) {
@@ -1065,7 +1074,8 @@ const changeUser = async (user_id, datas) => {
                 id : user_id
             },
             data : {
-                ...datas
+                ...datas,
+                date_naissance: new Date(datas.date_naissance)
             }
         });
         return true;
