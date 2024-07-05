@@ -136,7 +136,7 @@ const changeAssociation = async (association_id, datas) => {
             });
 
             // Mettez à jour les références dans les autres tables
-            const relatedNotifs = await prisma.notifcation.findMany()
+            const relatedNotifs = await prisma.notification.findMany()
             if (relatedNotifs.length !== 0) {
                 await prisma.notification.updateMany({
                     where: {
