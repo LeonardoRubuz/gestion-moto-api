@@ -126,7 +126,12 @@ const changeAssociation = async (association_id, datas) => {
                     id: parseInt(association_id)
                 },
                 data: {
-                    ...datas
+                    ...datas,
+                    programme: {
+                        connect: {
+                            nom: datas.programme
+                        }
+                    }
                 }
             });
 
